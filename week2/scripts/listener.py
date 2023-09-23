@@ -5,7 +5,7 @@ from geometry_msgs.msg import Twist
 import math
 import tf2_ros
 
-robotSpace = 0.5
+robotSpace = 0.2
 
 def sumOfEachQuarterOfArray(arr):
     size = len(arr)
@@ -40,10 +40,15 @@ def callback(data):
         pub.publish(move)
     else:
         try:
-            trans = tfBuffer.lookup_transform('person1', 'base_footprint', rospy.Time())
-            move.angular.z = 2 * math.atan2(trans.transform.translation.y, trans.transform.translation.x)
+            trans = tfBuffer.lookup_transform('person1', 'base_footprint', rospy.Time(0))
+            move.angular.z = 0.05 * math.atan2(trans.transform.translation.y, trans.transform.translation.x)
             move.linear.x = 0.2 * math.sqrt(trans.transform.translation.x ** 2 + trans.transform.translation.y ** 2)
-            if math.sqrt(trans.transform.translation.x ** 2 + trans.transform.translation.y ** 2) < 0.7:
+            if math.sqrt(trans.transform.translation.x ** 2 + trans.transform.translation.y ** 2) < 3:
+                move.angular.z = 0.02 * math.atan2(trans.transform.translation.y, trans.transform.translation.x)
+                move.linear.x = 0.05 * math.sqrt(trans.transform.translation.x ** 2 + trans.transform.translation.y ** 2)
+
+            if math.sqrt(trans.transform.translation.x ** 2 + trans.transform.translation.y ** 2) < 2:
+                move.angular.z = 0.01 * math.atan2(trans.transform.translation.y, trans.transform.translation.x)
                 move.linear.x = 0.0
             pub.publish(move)
         except (tf2_ros.LookupException, tf2_ros.ConnectivityException, tf2_ros.ExtrapolationException):

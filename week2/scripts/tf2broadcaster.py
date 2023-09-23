@@ -24,9 +24,7 @@ def callback(data):
         t.transform.rotation.z = q[2]
         t.transform.rotation.w = q[3]
 
-        print(person.reliability)
-        if person.reliability > 2:
-            br.sendTransform(t)
+        br.sendTransform(t)
 
 
 rospy.init_node('KillAllHumans')
