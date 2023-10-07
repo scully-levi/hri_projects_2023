@@ -1,0 +1,13 @@
+if we can get normal from each person, we can measure the angle differnce,
+acute angle difference would be a set of people.
+would have to measure a lot tough
+
+distance check before we measure the angle differnce
+
+then do a back stab measure to check if people are in a line.
+two people can be a line
+
+
+
+
+

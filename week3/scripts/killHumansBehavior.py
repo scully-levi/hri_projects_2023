@@ -44,18 +44,24 @@ def callback(data):
             trans = tfBuffer.lookup_transform('person1', 'base_footprint', rospy.Time(0))
             move.angular.z = 0.05 * math.atan2(trans.transform.translation.y, trans.transform.translation.x)
             move.linear.x = 0.2 * math.sqrt(trans.transform.translation.x ** 2 + trans.transform.translation.y ** 2)
+
+            if math.sqrt(trans.transform.translation.x ** 2 + trans.transform.translation.y ** 2) < 1:
+                move.angular.z = 0.0
+                move.linear.x = 0.0
+
+            if math.sqrt(trans.transform.translation.x ** 2 + trans.transform.translation.y ** 2) < 2:
+                move.angular.z = 0.005 * math.atan2(trans.transform.translation.y, trans.transform.translation.x)
+                move.linear.x = 0.0
+
             if math.sqrt(trans.transform.translation.x ** 2 + trans.transform.translation.y ** 2) < 3:
                 move.angular.z = 0.02 * math.atan2(trans.transform.translation.y, trans.transform.translation.x)
                 move.linear.x = 0.05 * math.sqrt(trans.transform.translation.x ** 2 + trans.transform.translation.y ** 2)
 
-            if math.sqrt(trans.transform.translation.x ** 2 + trans.transform.translation.y ** 2) < 2:
-                move.angular.z = 0.01 * math.atan2(trans.transform.translation.y, trans.transform.translation.x)
-                move.linear.x = 0.0
             pub.publish(move)
         except (tf2_ros.LookupException, tf2_ros.ConnectivityException, tf2_ros.ExtrapolationException):
             print('')
 
-rospy.init_node('sub_pub')
+rospy.init_node('groupDetection')
 pub = rospy.Publisher('/cmd_vel', Twist, queue_size = 1)
 sub = rospy.Subscriber('/base_scan', LaserScan, callback)
 
