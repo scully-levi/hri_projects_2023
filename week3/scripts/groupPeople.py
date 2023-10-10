@@ -20,7 +20,7 @@ def callback(data):
         index2 = index + 1
         tempList = [person]
         for index2, nextPerson in enumerate(data.people):
-            if (math.dist(data.people[index].pos, data.people[index +1].pos) < distanceToGroup):
+            if math.dist(person.pos, nextPerson.pos) < distanceToGroup:
                 tempList.append(nextPerson)
         peopleGroups.append(tempList)
 
