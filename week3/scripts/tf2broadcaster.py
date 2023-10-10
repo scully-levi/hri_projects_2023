@@ -13,8 +13,8 @@ def callback(data):
         t = geometry_msgs.msg.TransformStamped()
 
         t.header.stamp = rospy.Time.now()
-        t.header.frame_id = "base_footprint"
-        t.child_frame_id = "Person" + str(index)
+        t.header.frame_id = "world"
+        t.child_frame_id = "Person_" + str(index)
         print(index)
         print(person.pos)
         print('--')
