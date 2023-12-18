@@ -27,7 +27,7 @@ def callback(data):
         br.sendTransform(t)
 
 
-rospy.init_node('KillAllHumans')
+rospy.init_node('find_all_humans')
 sub = rospy.Subscriber('/people_tracker_measurements', PositionMeasurementArray, callback)
 rate = rospy.Rate(2)
 
