@@ -10,15 +10,15 @@ def keyframe_animation():
     pub = rospy.Publisher('joint_states', JointState, queue_size = 10)
     rate = rospy.Rate(20)
     while not rospy.is_shutdown():
-
+# head nod, keyframe positions -0.40 , 0.35
         joint_states = JointState()
         joint_states.header.stamp = rospy.get_rostime()
         joint_states.header.frame_id = "Torso"
-        joint_states.name.append("HeadYaw")
+    #    joint_states.name.append("HeadYaw")
         joint_states.name.append("HeadPitch")
 
-        joint_states.position.append(0.17)
-        joint_states.position.append(-0.39)
+        joint_states.position.append(0.35)
+        joint_states.position.append(-0.40)
 
         pub.publish(joint_states)
         rate.sleep()
