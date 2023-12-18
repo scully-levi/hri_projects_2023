@@ -6,20 +6,21 @@ from ros_vosk.msg import speech_recognition
 from std_msgs.msg import String, Bool
 
 def callback(data):
-    user_answer = data
     temp = str(data)
+    global user_answer_bool
     if "yes" in temp:
-        user_answer_bool = True
+        print("yes")
+        user_answer_bool= True
     else:
+        print("no")
         user_answer_bool = False
 
-
 if __name__ == '__main__':
-    rospy.init_node('listener', anonymous=True)
-    rate = rospy.Rate(60)
+    rospy.init_node('questions', anonymous=True)
+    rate = rospy.Rate(1)
     sub = rospy.Subscriber('speech_recognition/final_result', String, callback)
-    pub = rospy.Publisher('tts/phrase', String, queue_size = 10)
-    #I used Chat GPT to come up with yes/no questions and responses
+    pub = rospy.Publisher('tts/phrase', String, queue_size = 1)
+    #I used Chat GPT to come up with yes/no questions and responses and edited them slightly
     questions = ["Did you finish reading a book this week?",
                  "Have you ever tried bungee jumping?",
                  "Is your favorite season winter?",
@@ -35,24 +36,25 @@ if __name__ == '__main__':
                     "Ew, as a robot I hate the summer heat",
                     "That's too bad, but theres always a chance to support your favorite artists in the future!",
                     "That's okay. It's never too late to learn!"]
-    user_answer = None
-    user_answer_bool = False
+    user_answer_bool = None
+    test = False
     Qnum = 0
+    rospy.sleep(1)
+    pub.publish("I have five questions for you, my first question is.")
     for q in questions:
-        rospy.sleep(1)
         print(q)
         pub.publish(q)
-        rospy.sleep(4)
-        print('done')
         response = ""
-        while user_answer == None:
-            rospy.sleep(.01)
-        if user_answer == True:
+        while user_answer_bool == None:
+            pass
+        if user_answer_bool == True:
             response = yes_responses[Qnum]
         else:
             response = no_responses[Qnum]
         Qnum += 1
         pub.publish(response)
+        user_answer_bool = None
+        rospy.sleep(.5)
+        pub.publish("My next question is")
+    pub.publish("Thank you for your time")
 
-   # spin() simply keeps python from exiting until this node is stopped
-    rospy.spin()

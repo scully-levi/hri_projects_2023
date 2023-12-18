@@ -10,7 +10,7 @@ def callback_final(data1):
     pub.publish(data1)
 
 if __name__ == '__main__':
-    rospy.init_node('listener', anonymous=True)
+    rospy.init_node('call-reponse', anonymous=True)
     sub = rospy.Subscriber('speech_recognition/final_result', String, callback_final)
     pub = rospy.Publisher('tts/phrase', String ,queue_size = 10)
 
